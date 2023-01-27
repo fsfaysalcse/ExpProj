@@ -1,5 +1,7 @@
 package com.example.motiontest
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val list = listOf<String>(
-            "Android Is best",
+            "Android is best",
             "IOS is optimized",
             "Linux is super",
             "Windows is buggy",
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                 val span = SpannableStringBuilder(holder.textView.text)
 
 
-                val wordToFind = "love"
+                val wordToFind = "is"
                 val startIndex = spannableStringBuilder.indexOf(wordToFind)
 
                 Log.d("dgdsfgdsfgdfsg", "onCreate: $startIndex")
@@ -72,25 +74,49 @@ class MainActivity : AppCompatActivity() {
                     val endIndex = startIndex + wordToFind.length
 
 
-                    span.setSpan(
+                  /*  span.setSpan(
                         ForegroundColorSpan(Color.RED),
                         startIndex,
                         endIndex,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    holder.textView.text = span
+                    )*/
 
-                    /*  val handler = Handler()
+                /*    holder.textView.text = span
+
+                    *//*  val handler = Handler()
                       val runnable = Runnable {
                           spannableStringBuilder.removeSpan(span)
                           holder.textView.text = spannableStringBuilder
                       }
-                      handler.postDelayed(runnable, 3000)*/
+                      handler.postDelayed(runnable, 3000)*//*
 
                     holder.textView.postDelayed({
                         spannableStringBuilder.removeSpan(span)
                         holder.textView.text = spannableStringBuilder
-                    }, 3000)
+                    }, 3000)*/
+
+                    val highlightSpan = ForegroundColorSpan(Color.YELLOW)
+
+
+                    span.setSpan(highlightSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    holder.textView.text = span
+
+                    val animator = ValueAnimator.ofArgb(Color.YELLOW, Color.TRANSPARENT)
+                    animator.duration = 2000 // 2 seconds
+                    animator.addUpdateListener { animator ->
+                        val color = animator.animatedValue as Int
+
+                        val highlightSpan = ForegroundColorSpan(color)
+                        span.setSpan(highlightSpan, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        holder.textView.text = span
+                        holder.textView.invalidate()
+                    }
+                    animator.start()
+
+
+
+
+
                 }
 
             }
